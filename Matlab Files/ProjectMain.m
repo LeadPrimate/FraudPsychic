@@ -2,33 +2,29 @@
 %Written by Ryan Norman and Sarah Garber
 
 data = dlmread('creditcard.csv', ',', 1, 0);
+x = data(:, 1:30);
+y = data(:, 31);
 
 %  Setup the data matrix appropriately, and add ones for the intercept term
-[m, n] = size(data);
+[m, n] = size(x);
 
 % Add intercept term to x and X_test
-Time = [ones(m, 1) Time];
+x = [ones(m, 1) x];
 
 % Initialize fitting parameters
-initial_theta = zeros(n + 1, 31);
+initial_theta = zeros(n + 1, 1);
 
-
+[cost, grad] = costFunction(initial_theta, x, y);
 %  Run fminunc to obtain the optimal theta
 options = optimset('GradObj', 'on', 'MaxIter', 400);
 [theta, cost] = ...
-	fminunc(@(t)(costFunction(t, Time, V1)), initial_theta, options);
+	fminunc(@(t)(costFunction(t, x, y)), initial_theta, options);
 
 fprintf('theta: \n');
 fprintf(' %f \n', theta);
 
-
-prob = sigmoid([1 45 85] * theta);
-fprintf(['For a student with scores 45 and 85, we predict an admission ' ...
-         'probability of %f\n'], prob);
-fprintf('Expected value: 0.775 +/- 0.002\n\n');
-
 % Compute accuracy on our training set
-p = predict(theta, Time);
+p = predict(theta, x);
 
 
 
