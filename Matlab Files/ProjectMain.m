@@ -11,33 +11,22 @@ y = data(:, 31);
 % Add intercept term to x and X_test
 x = [ones(m, 1) x];
 
-% K-fold Cross Validation
-folds = 5; % kPartion should be > 1
-if folds <= 1
-   error("Warning! folds has been set to a value below 2."); 
-end
-
 % Initialize fitting parameters
 initial_theta = zeros(n + 1, 1);
 
+halfData = m/2;
+training = x(halfData:, :);
+[cost, grad] = costFunction(initial_theta, training, y);
+%  Run fminunc to obtain the optimal theta
+options = optimset('GradObj', 'on', 'MaxIter', 400);
+[theta, cost] = ...
+	fminunc(@(t)(costFunction(t, x, y)), initial_theta, options);
 
-indices = crossvalind('Kfold',data,folds);
-cp = classperf(data);
-for i = 1:folds
-    test = (indices == i); train = ~test;
-    class = classify(meas(test,:),meas(train,:),data(train,:));
-    classperf(cp,class,test)
-end
+fprintf('theta: \n');
+fprintf(' %f \n', theta);
 
-
-%for i = 1:kPartition
-%    [cost, grad] = costFunction(...
-%        initial_theta, x(partitionSize * i , :), y(partitionSize * i, :));
-%    %  Run fminunc to obtain the optimal theta
-%    options = optimset('GradObj', 'on', 'MaxIter', 400);
-%    [theta, cost] = ...
-%        fminunc(@(t)(costFunction(t, x, y)), initial_theta, options);
-%end
+% Compute accuracy on our training set
+p = predict(theta, x);
 
 
 

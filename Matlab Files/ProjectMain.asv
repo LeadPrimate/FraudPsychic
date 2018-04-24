@@ -2,6 +2,8 @@
 %Written by Ryan Norman and Sarah Garber
 
 data = dlmread('creditcard.csv', ',', 1, 0);
+halfData = m/2;
+training = data(halfData:, :);
 x = data(:, 1:30);
 y = data(:, 31);
 
@@ -11,28 +13,20 @@ y = data(:, 31);
 % Add intercept term to x and X_test
 x = [ones(m, 1) x];
 
-% K-fold Cross Validation
-kPartition = 5; % kPartion should be > 1
-if kPartiont <= 1
-   error("Warning! kPartition has been set to a value below 2."); 
-end
-partitionSize = floor(m / kPartition);
-
 % Initialize fitting parameters
 initial_theta = zeros(n + 1, 1);
 
-for i = 1:kPartition
+[cost, grad] = costFunction(initial_theta, training, y);
+%  Run fminunc to obtain the optimal theta
+options = optimset('GradObj', 'on', 'MaxIter', 400);
+[theta, cost] = ...
+	fminunc(@(t)(costFunction(t, x, y)), initial_theta, options);
 
-    [cost, grad] = costFunction(...
-        initial_theta, x(partitionSize * i, :), y(partitionSize * i, :));
-    %  Run fminunc to obtain the optimal theta
-    options = optimset('GradObj', 'on', 'MaxIter', 400);
-    [theta, cost] = ...
-        fminunc(@(t)(costFunction(t, x, y)), initial_theta, options);
+fprintf('theta: \n');
+fprintf(' %f \n', theta);
 
-    
-    
-end
+% Compute accuracy on our training set
+p = predict(theta, x);
 
 
 
