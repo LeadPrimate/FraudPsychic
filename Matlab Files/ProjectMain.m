@@ -6,17 +6,18 @@ x = data(:, 1:30);
 y = data(:, 31);
 
 %  Setup the data matrix appropriately, and add ones for the intercept term
-[m, n] = size(x);
+[dataHeight, dataWidth] = size(x);
 
 % Add intercept term to x and X_test
-x = [ones(m, 1) x];
+x = [ones(dataHeight, 1) x];
 
 % Initialize fitting parameters
-initial_theta = zeros(n + 1, 1);
+initial_theta = zeros(dataWidth + 1, 1);
 
 halfData = m/2;
-training = x(halfData:, :);
-[cost, grad] = costFunction(initial_theta, training, y);
+training = x(0:halfData, :);
+trainingValid = y(0:halfData, :);
+[cost, grad] = costFunction(initial_theta, training, trainingValid);
 %  Run fminunc to obtain the optimal theta
 options = optimset('GradObj', 'on', 'MaxIter', 400);
 [theta, cost] = ...
@@ -24,6 +25,10 @@ options = optimset('GradObj', 'on', 'MaxIter', 400);
 
 fprintf('theta: \n');
 fprintf(' %f \n', theta);
+
+
+testing = x(halfData:dataHeight, :);
+testingValid = y(halfDataxHeight, :);
 
 % Compute accuracy on our training set
 p = predict(theta, x);

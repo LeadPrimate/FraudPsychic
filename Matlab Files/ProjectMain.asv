@@ -2,8 +2,6 @@
 %Written by Ryan Norman and Sarah Garber
 
 data = dlmread('creditcard.csv', ',', 1, 0);
-halfData = m/2;
-training = data(halfData:, :);
 x = data(:, 1:30);
 y = data(:, 31);
 
@@ -16,6 +14,8 @@ x = [ones(m, 1) x];
 % Initialize fitting parameters
 initial_theta = zeros(n + 1, 1);
 
+halfData = m/2;
+training = x;
 [cost, grad] = costFunction(initial_theta, training, y);
 %  Run fminunc to obtain the optimal theta
 options = optimset('GradObj', 'on', 'MaxIter', 400);
