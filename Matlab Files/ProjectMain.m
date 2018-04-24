@@ -31,7 +31,7 @@ fprintf(' %f \n', theta);
 testing = x(halfData:dataHeight, :);
 testingValid = y(halfData:dataHeight, :);
 
-p = predict(theta, testing);
+[p, hx] = predict(theta, testing);
 
 hitMiss = zeros(round(halfData), 1);
 for n = 1 : size(p)
@@ -44,3 +44,9 @@ for n = 1 : size(p)
 end
 
 accuracy = sum(hitMiss)/ halfData;
+
+fprintf('accuracy: \n');
+fprintf(' %f%% \n', (accuracy * 100));
+plot(hx, testingValid);
+%plot(x(:, 29:31), y);
+
