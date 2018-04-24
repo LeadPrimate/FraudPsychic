@@ -14,7 +14,7 @@ x = [ones(dataHeight, 1) x];
 % Initialize fitting parameters
 initial_theta = zeros(dataWidth + 1, 1);
 
-halfData = m/2;
+halfData = dataHeight/2;
 training = x(0:halfData, :);
 trainingValid = y(0:halfData, :);
 [cost, grad] = costFunction(initial_theta, training, trainingValid);
@@ -28,10 +28,8 @@ fprintf(' %f \n', theta);
 
 
 testing = x(halfData:dataHeight, :);
-testingValid = y(halfDataxHeight, :);
+testingValid = y(halfData:dataHeight, :);
 
-% Compute accuracy on our training set
-p = predict(theta, x);
 
 
 
