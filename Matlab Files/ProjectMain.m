@@ -17,6 +17,7 @@ initial_theta = zeros(dataWidth + 1, 1);
 halfData = dataHeight/2;
 training = x(0:halfData, :);
 trainingValid = y(0:halfData, :);
+
 [cost, grad] = costFunction(initial_theta, training, trainingValid);
 %  Run fminunc to obtain the optimal theta
 options = optimset('GradObj', 'on', 'MaxIter', 400);
@@ -30,6 +31,16 @@ fprintf(' %f \n', theta);
 testing = x(halfData:dataHeight, :);
 testingValid = y(halfData:dataHeight, :);
 
+p = predict(theta, testing);
 
+hitMiss = zeros(round(halfData), 1);
+for n = 1 : size(p)
+    if p(n) == testingValid(n)
+        hitMiss(n) = 1;
+    end
+    if p(n) ~= testingValid(n)
+        hitMiss(n) = 0;
+    end
+end
 
-
+accuracy = sum(hitMiss)/ halfData;
