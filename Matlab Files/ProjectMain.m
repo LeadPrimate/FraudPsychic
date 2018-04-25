@@ -47,6 +47,6 @@ accuracy = sum(hitMiss)/ halfData;
 
 fprintf('accuracy: \n');
 fprintf(' %f%% \n', (accuracy * 100));
-plot(hx, testingValid);
+scatter(hx, testingValid);
 %plot(x(:, 29:31), y);
 
