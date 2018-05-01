@@ -1,4 +1,4 @@
-function plotDecisionBoundary(theta, X, y)
+function boundary(theta, X, y)
 %PLOTDECISIONBOUNDARY Plots the data points X and y into a new figure with
 %the decision boundary defined by theta
 %   PLOTDECISIONBOUNDARY(theta, X,y) plots the data points with + for the 
